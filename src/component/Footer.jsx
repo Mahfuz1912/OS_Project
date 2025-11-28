@@ -1,33 +1,173 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const quickLinks = [
+    { name: "🏠 Home", path: "/" },
+    { name: "⚡ Simulator", path: "/simulator" },
+    { name: "📊 Compare", path: "/compare" },
+    { name: "📚 Algorithms", path: "/algorithm" },
+  ];
+
+  const resources = [
+    { name: "📄 Project Report", url: "#" },
+    { name: "💻 GitHub", url: "https://github.com" },
+    { name: "🎓 BLC", url: "#" },
+    { name: "📖 Documentation", url: "#" },
+  ];
+
+  const teamMembers = [
+    { name: "Sabit Al Mahfuz", role: "Full Stack Developer" },
+    { name: "Ali Ashraf Emon", role: "Full Stack Developer" },
+  ];
+
   return (
-    <footer className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-t-xl shadow-lg mt-10">
-      <div className="container mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-6 md:gap-0">
-        {/* Navigation Links */}
-        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
-          <nav className="flex flex-col md:flex-row gap-4">
-            <a className="link link-hover hover:text-yellow-300 transition-colors hover:text-xl duration-300">
-              BLC
-            </a>
-            <a className="link link-hover hover:text-yellow-300 transition-colors duration-300">
-              Project Report
-            </a>
-            <a className="link link-hover hover:text-yellow-300 transition-colors duration-300">
-              GitHub
-            </a>
-          </nav>
+    <footer className="bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 text-white mt-20 border-t border-indigo-500/30">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          
+          {/* Brand Section */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                DIU
+              </div>
+              <div>
+                <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  Scheduler Pro
+                </h3>
+                <p className="text-sm text-gray-400">DIU Project</p>
+              </div>
+            </div>
+            <p className="text-gray-300 text-sm leading-relaxed mb-4">
+              Advanced CPU Scheduling Algorithms Simulator for Operating Systems course. 
+              Visualize and compare different scheduling techniques in real-time.
+            </p>
+            <div className="flex space-x-3">
+              <a 
+                href="https://github.com" 
+                className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-cyan-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/25"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="text-lg"><FaGithub /></span>
+              </a>
+              <a 
+                href="#" 
+                className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/25"
+              >
+                <span className="text-lg">📄</span>
+              </a>
+              <a 
+                href="#" 
+                className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-purple-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25"
+              >
+                <span className="text-lg">🎓</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-cyan-400 flex items-center gap-2">
+              <span>🚀</span> Quick Links
+            </h4>
+            <ul className="space-y-3">
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <Link 
+                    to={link.path}
+                    className="text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:translate-x-2 flex items-center gap-2 group"
+                  >
+                    <span className="text-sm group-hover:scale-110 transition-transform">
+                      {link.name.split(' ')[0]}
+                    </span>
+                    <span className="text-sm">{link.name.split(' ').slice(1).join(' ')}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-blue-400 flex items-center gap-2">
+              <span>📚</span> Resources
+            </h4>
+            <ul className="space-y-3">
+              {resources.map((resource, index) => (
+                <li key={index}>
+                  <a 
+                    href={resource.url}
+                    className="text-gray-300 hover:text-blue-400 transition-all duration-300 hover:translate-x-2 flex items-center gap-2 group"
+                    target={resource.url.startsWith('http') ? '_blank' : '_self'}
+                    rel={resource.url.startsWith('http') ? 'noopener noreferrer' : ''}
+                  >
+                    <span className="text-sm group-hover:scale-110 transition-transform">
+                      {resource.name.split(' ')[0]}
+                    </span>
+                    <span className="text-sm">{resource.name.split(' ').slice(1).join(' ')}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Team & Contact */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-purple-400 flex items-center gap-2">
+              <span>👥</span> Development Team
+            </h4>
+            <div className="space-y-3 mb-6">
+              {teamMembers.map((member, index) => (
+                <div key={index} className="text-gray-300">
+                  <div className="font-medium text-white">{member.name}</div>
+                  <div className="text-xs text-gray-400">{member.role}</div>
+                </div>
+              ))}
+            </div>
+            
+            <h4 className="text-lg font-semibold mb-3 text-green-400 flex items-center gap-2">
+              <span>📖</span> Course Info
+            </h4>
+            <div className="text-gray-300">
+              <div className="font-medium text-white">Operating Systems</div>
+              <div className="text-xs text-gray-400">CSE 324 | Fall 2025</div>
+              <div className="text-xs text-gray-400">Daffodil International University</div>
+            </div>
+          </div>
         </div>
-        <div>
-          <h1 className="text-xl font-bold">Operating System</h1>
-        </div>
-        {/* Copyright */}
-        <div className="text-center md:text-right mt-6 md:mt-0">
-          <p className="text-sm md:text-base">
-            &copy; {new Date().getFullYear()} S.A.Mahfuz & Ali Ashraf Emon Project
-          </p>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-gray-400 text-sm text-center md:text-left">
+            <p>
+              &copy; {currentYear} <span className="text-cyan-400">CPU Scheduler Pro</span>. 
+              All rights reserved.
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-4 text-sm text-gray-400">
+            <span>Made with</span>
+            <span>by</span>
+            <span className="text-cyan-400 font-semibold">S.A. Mahfuz</span>
+            <span>&</span>
+            <span className="text-blue-400 font-semibold">Ali Ashraf Emon</span>
+          </div>
+
+          <div className="text-gray-400 text-sm">
+            <span className="bg-gradient-to-r from-cyan-500 to-blue-500 text-transparent bg-clip-text font-bold">
+              v1.0.0
+            </span>
+          </div>
         </div>
       </div>
+
+      {/* Decorative Gradient Bar */}
+      <div className="h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500"></div>
     </footer>
   );
 };
