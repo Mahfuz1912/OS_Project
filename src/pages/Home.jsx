@@ -581,9 +581,9 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* ========================================================= */}
+
             {/* METRIC 3: CPU UTILIZATION */}
-            {/* ========================================================= */}
+
             <div className="p-5 rounded-xl shadow-lg bg-gray-700 border-l-4 border-green-500 transition-all duration-300 hover:shadow-green-500/20">
               <p className="text-sm font-semibold text-gray-400 mb-1">
                 CPU Utilization
