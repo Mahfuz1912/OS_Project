@@ -130,7 +130,14 @@ export default function Home() {
 
   const simulation = useMemo(() => {
     if (!processes.length)
-      return { gantt: [], summary: [], totalTime: 0, totals: {}, busyTime: 0 };
+      return {
+        gantt: [],
+        summary: [],
+        totalTime: 0,
+        // provide numeric defaults to avoid NaN when dividing
+        totals: { totalWaiting: 0, totalTurnaround: 0 },
+        busyTime: 0,
+      };
     if (algorithm === "FCFS") return simulateFCFS(processes);
     if (algorithm === "SJF") return simulateSJF(processes);
     if (algorithm === "SRTF") return simulateSRTF(processes);
@@ -236,13 +243,12 @@ export default function Home() {
             <option className="bg-gray-800" value="SJF">
               SJF (Shortest Job First) - Non-preemptive
             </option>
-                        <option className="bg-gray-800" value="SRTF">
+            <option className="bg-gray-800" value="SRTF">
               SRTF (Shortest Remaining Time First)
             </option>
             <option className="bg-gray-800" value="RR">
               Round Robin
             </option>
-
           </select>
 
           {/* Algorithm Description */}
@@ -561,90 +567,76 @@ export default function Home() {
         animate={{ opacity: 1 }}
         className="bg-base-200 p-5 rounded-xl shadow-lg"
       >
-        <h3 className="font-bold mb-3">📊 Gantt Chart</h3>
+<h3 className="font-bold mb-3">📊 Gantt Chart</h3>
 
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4 text-indigo-400 flex items-center">
-            <span className="mr-2">⏱️</span> CPU Gantt Chart
-          </h2>
+<div className="mt-8">
+  <h2 className="text-xl font-bold mb-4 text-indigo-400 flex items-center">
+    <span className="mr-2">⏱️</span> CPU Gantt Chart
+  </h2>
 
-          {simulation.gantt.length === 0 ? (
-            <p className="text-gray-500 text-center p-8 border border-dashed border-gray-700 rounded-lg">
-              No simulation data. Run simulation to see the chart.
-            </p>
-          ) : (
-            <div className="relative">
-              {/* Process Segments */}
-              <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
-                {simulation.gantt.map((g, i) => {
-                  const width = simulation.totalTime
-                    ? ((g.end - g.start) / simulation.totalTime) * 100
-                    : 0;
-                  const duration = g.end - g.start;
+  {simulation.gantt.length === 0 ? (
+    <p className="text-gray-500 text-center p-8 border border-dashed border-gray-700 rounded-lg">
+      No simulation data. Run simulation to see the chart.
+    </p>
+  ) : (
+    <div className="relative">
+      {/* Process Segments */}
+      <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
+{simulation.gantt.map((g, i) => {
+  const duration = g.end - g.start;
+  const width = (duration / simulation.totalTime) * 100;
+  const finalWidth = Math.max(width, 5); // minimum 5% width
 
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                      style={{ width: `${width}%` }}
-                      className="origin-left h-full border-r border-gray-800"
-                    >
-                      <div
-                        className="h-full w-full flex items-center justify-center font-extrabold text-xs sm:text-sm text-black rounded-lg transition-all duration-300 hover:opacity-90 cursor-default"
-                        style={{ background: g.color }}
-                        title={`Process: ${g.name} | Start: ${g.start} | End: ${g.end} | Duration: ${duration}ms`}
-                      >
-                        {duration >= 2 && (
-                          <span className="truncate px-1">{g.name}</span>
-                        )}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+  return (
+    <motion.div
+      key={i}
+      initial={{ width: 0 }}
+      animate={{ width: `${finalWidth}%` }}
+      transition={{ duration: 0.4, delay: i * 0.05 }}
+      className="h-full border-r border-gray-800"
+    >
+      <div
+        className="h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
+        style={{ background: g.color }}
+      >
+        <span className="truncate px-1">{g.name}</span>
+      </div>
+    </motion.div>
+  );
+})}
 
-              {/* Time Axis */}
-              <div className="relative flex w-full h-8 mt-2 overflow-x-hidden">
-                <div className="absolute top-0 left-0 text-xs font-mono text-gray-400">
-                  0
-                </div>
+      </div>
 
-                {simulation.gantt.map((g, i) => {
-                  const position = simulation.totalTime
-                    ? (g.end / simulation.totalTime) * 100
-                    : 0;
+      {/* Optimized Time Scale */}
+      <div className="relative flex w-full h-8 mt-3">
+        {/* Start time = 0 */}
+        <div className="absolute left-0 text-xs font-mono text-gray-400">0</div>
 
-                  if (position > 0) {
-                    return (
-                      <div
-                        key={`time-${i}`}
-                        className="absolute top-0 flex flex-col items-center"
-                        style={{
-                          left: `${position}%`,
-                          transform: "translateX(-50%)",
-                        }}
-                      >
-                        <div className="w-px h-2 bg-gray-600 mb-1"></div>
-                        <div className="text-xs font-mono text-gray-400">
-                          {g.end}
-                        </div>
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
+        {simulation.gantt.map((g, i) => {
+          const left = (g.end / simulation.totalTime) * 100;
 
-                {simulation.totalTime > 0 && (
-                  <div className="absolute top-0 right-0 text-xs font-mono text-gray-400">
-                    {simulation.totalTime}
-                  </div>
-                )}
-              </div>
+          return (
+            <div
+              key={i}
+              className="absolute flex flex-col items-center"
+              style={{ left: `${left}%`, transform: "translateX(-50%)" }}
+            >
+              <div className="w-px h-3 bg-gray-600 mb-1"></div>
+              <div className="text-xs font-mono text-gray-400">{g.end}</div>
             </div>
-          )}
-        </div>
+          );
+        })}
+
+        {/* ❌ Removed — this caused end time duplication */}
+        {/* <div className="absolute right-0 text-xs font-mono text-gray-400">
+          {simulation.totalTime}
+        </div> */}
+      </div>
+    </div>
+  )}
+</div>
+
+
 
         {/* ================= Summary Table ================= */}
         <div className="mt-6">

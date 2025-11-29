@@ -296,14 +296,14 @@ const simulateRR = (processes, quantum) => {
   };
 };
 
-// Fixed predefined processes - CANNOT BE MODIFIED OR DELETED
+// Fixed predefined processes with BRIGHT COLORS
 const FIXED_PROCESSES = [
   {
     id: "fixed-1",
     name: "P1",
     arrival: 0,
     burst: 5,
-    color: "#f97316",
+    color: "#FF6B6B", // Bright Red
     fixed: true,
   },
   {
@@ -311,7 +311,7 @@ const FIXED_PROCESSES = [
     name: "P2",
     arrival: 2,
     burst: 3,
-    color: "#60a5fa",
+    color: "#4ECDC4", // Bright Teal
     fixed: true,
   },
   {
@@ -319,7 +319,7 @@ const FIXED_PROCESSES = [
     name: "P3",
     arrival: 4,
     burst: 2,
-    color: "#86efac",
+    color: "#FFD166", // Bright Yellow
     fixed: true,
   },
   {
@@ -327,7 +327,7 @@ const FIXED_PROCESSES = [
     name: "P4",
     arrival: 6,
     burst: 4,
-    color: "#d946ef",
+    color: "#06D6A0", // Bright Green
     fixed: true,
   },
   {
@@ -335,7 +335,7 @@ const FIXED_PROCESSES = [
     name: "P5",
     arrival: 8,
     burst: 1,
-    color: "#f59e0b",
+    color: "#118AB2", // Bright Blue
     fixed: true,
   },
 ];
@@ -351,8 +351,6 @@ const Simulation = () => {
   const [quantum, setQuantum] = useState(4);
   const [isSimulating, setIsSimulating] = useState(false);
 
-  // customProcesses may be passed via location.state or persisted in localStorage.
-  // Fallback to empty array to avoid ReferenceError.
   const customProcesses =
     (location.state && location.state.customProcesses) ||
     (() => {
@@ -363,10 +361,11 @@ const Simulation = () => {
       }
     })();
 
-  // Combine fixed and custom processes for simulation
   const allProcesses = useMemo(() => {
     return [...FIXED_PROCESSES, ...customProcesses];
   }, [customProcesses]);
+
+  const processes = allProcesses;
 
   const algorithmInfo = {
     FCFS: {
@@ -374,24 +373,28 @@ const Simulation = () => {
       description: "Processes are executed in order of arrival",
       complexity: "O(n)",
       bestFor: "Batch systems",
+      color: "from-purple-500 to-pink-500",
     },
     SJF: {
       name: "Shortest Job First",
       description: "Process with smallest burst time executes first",
       complexity: "O(n log n)",
       bestFor: "Batch processing",
+      color: "from-green-500 to-teal-500",
     },
     SRTF: {
       name: "Shortest Remaining Time First",
       description: "Preemptive version of SJF",
       complexity: "O(n²)",
       bestFor: "Interactive systems",
+      color: "from-orange-500 to-red-500",
     },
     RR: {
       name: "Round Robin",
       description: "Fixed time quantum for each process",
       complexity: "O(n)",
       bestFor: "Time-sharing systems",
+      color: "from-blue-500 to-cyan-500",
     },
   };
 
@@ -408,7 +411,6 @@ const Simulation = () => {
     toast.success(`${algorithmInfo[algorithm].name} simulation completed`);
   };
 
-  // Simulation computation using all processes
   const simulation = useMemo(() => {
     if (allProcesses.length === 0) {
       return { gantt: [], summary: [], totalTime: 0, totals: {}, busyTime: 0 };
@@ -446,325 +448,497 @@ const Simulation = () => {
       : "0.00";
 
   return (
-    <div className="container mx-auto p-6">
-      {/* page background improved */}
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-6">
-        <div className=" gap-6">
-          {/* Sidebar: Algorithm + Process Queue (side-by-side on lg) */}
-          <aside className="lg:col-span-3 order-1">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Algorithm card */}
-              <div className="flex-1 bg-gray-800/60 rounded-2xl p-4 border border-gray-700 shadow-md">
-                {/* Place your existing Algorithm selection JSX here */}
-                <h2 className="text-xl font-bold mb-4 text-cyan-400 flex items-center gap-2">
-                  <span>⚙️</span> Algorithm
-                </h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      <div className="container mx-auto">
+        {/* Header */}
+        <motion.header
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
+            CPU Scheduling Simulator
+          </h1>
+          <p className="text-gray-300 text-lg">
+            Visualize and analyze process scheduling algorithms in real-time
+          </p>
+        </motion.header>
 
-                <select
-                  value={algorithm}
-                  onChange={(e) => setAlgorithm(e.target.value)}
-                  className="select select-bordered w-full bg-gray-700 border-gray-600 text-white mb-4"
-                >
-                  <option value="FCFS">FCFS (First Come First Serve)</option>
-                  <option value="SJF">SJF (Shortest Job First)</option>
-                  <option value="SRTF">
-                    SRTF (Shortest Remaining Time First)
-                  </option>
-                  <option value="RR">Round Robin</option>
-                </select>
+        <div className="">
+          {/* Sidebar */}
+          <aside className="grid grid-cols-12 gap-6 mb-8">
+            {/* Algorithm Card */}
+            <div className="grid col-span-4">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 border border-cyan-500/20 shadow-2xl"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-cyan-500/20 rounded-lg">
+                    <span className="text-2xl">⚙️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-cyan-300">
+                      Algorithm
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      Select scheduling method
+                    </p>
+                  </div>
+                </div>
 
-                <AnimatePresence>
+                <div className="space-y-4">
+                  <select
+                    value={algorithm}
+                    onChange={(e) => setAlgorithm(e.target.value)}
+                    className="w-full bg-gray-700/80 border border-cyan-500/30 rounded-xl p-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                  >
+                    <option value="FCFS">First Come First Serve (FCFS)</option>
+                    <option value="SJF">Shortest Job First (SJF)</option>
+                    <option value="SRTF">
+                      Shortest Remaining Time First (SRTF)
+                    </option>
+                    <option value="RR">Round Robin (RR)</option>
+                  </select>
+
                   {algorithm === "RR" && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mb-4"
+                      className="space-y-2"
                     >
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      <label className="text-sm font-medium text-gray-300">
                         ⏱️ Time Quantum
                       </label>
                       <input
                         type="number"
                         value={quantum}
                         onChange={(e) => setQuantum(Number(e.target.value))}
-                        min="1"
-                        className="input input-bordered w-full bg-gray-700 border-gray-600 text-white"
+                        min={1}
+                        className="w-full bg-gray-700/80 border border-cyan-500/30 rounded-xl p-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                       />
                     </motion.div>
                   )}
-                </AnimatePresence>
 
-                <div className="bg-gray-700/50 rounded-lg p-4">
-                  <h3 className="font-semibold text-cyan-400 mb-2">
-                    {algorithmInfo[algorithm].name}
-                  </h3>
-                  <p className="text-sm text-gray-300 mb-2">
-                    {algorithmInfo[algorithm].description}
-                  </p>
-                  <div className="text-xs text-gray-400">
-                    <div>Complexity: {algorithmInfo[algorithm].complexity}</div>
-                    <div>Best for: {algorithmInfo[algorithm].bestFor}</div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={runSimulation}
-                  disabled={isSimulating}
-                  className={`btn w-full mt-4 ${
-                    isSimulating
-                      ? "bg-gray-600 cursor-not-allowed"
-                      : "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
-                  } text-white border-none`}
-                >
-                  {isSimulating ? "⏳ Simulating..." : "🚀 Run Simulation"}
-                </button>
-              </div>
-
-              {/* Process Queue card */}
-              <div className="flex-1 bg-gray-800/60 rounded-2xl p-4 border border-gray-700 shadow-md">
-                <h3 className="text-sm font-semibold text-gray-200 mb-3">
-                  🧾 Process Queue
-                </h3>
-                <div className="flex flex-col gap-2 max-h-60 overflow-auto">
-                  {/* Place your existing Process Queue JSX here */}
-                  <div>
-                    <h2 className="text-xl font-bold text-purple-400 flex items-center gap-2">
-                      <span>📋</span> Process Queue
-                      <span className="text-sm text-gray-400 ml-2">
-                        (Fixed: {FIXED_PROCESSES.length} | Custom: )
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={runSimulation}
+                    disabled={isSimulating}
+                    className={`w-full rounded-xl px-6 py-3 font-bold text-white transition-all ${
+                      isSimulating
+                        ? "bg-gray-600 cursor-not-allowed"
+                        : `bg-gradient-to-r ${
+                            algorithmInfo[algorithm]?.color ||
+                            "from-cyan-500 to-blue-500"
+                          } hover:shadow-lg`
+                    }`}
+                  >
+                    {isSimulating ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Simulating...
                       </span>
-                    </h2>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        🚀 Run Simulation
+                      </span>
+                    )}
+                  </motion.button>
+                </div>
+              </motion.div>
+            </div>
 
-                    {/* Fixed Processes Section */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
-                        <span>🔒</span> Fixed Processes (Cannot be modified)
+            {/* Process Queue Card */}
+            <div className="col-span-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                      <span className="text-2xl">🧾</span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-purple-300">
+                        Process Queue
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {FIXED_PROCESSES.map((process) => (
-                          <motion.div
-                            key={process.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="bg-gray-700/50 rounded-xl p-4 border-l-4 border-cyan-500 relative"
-                            style={{ borderLeftColor: process.color }}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div
-                                style={{ background: process.color }}
-                                className="w-8 h-8 rounded-lg flex items-center justify-center text-black font-bold text-sm"
-                              >
-                                {process.name.slice(0, 2)}
-                              </div>
-                              <div>
-                                <h3 className="font-bold text-white">
-                                  {process.name}
-                                </h3>
-                                <div className="text-xs text-gray-400 font-mono">
-                                  AT: {process.arrival}ms | BT: {process.burst}
-                                  ms
-                                </div>
-                              </div>
-                            </div>
-                            <div className="absolute top-2 right-2 text-xs bg-cyan-500 text-white px-2 py-1 rounded-full">
-                              Fixed
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
+                      <p className="text-sm text-gray-400">
+                        {processes.length} processes <span className="font-bold text-amber-300">Fixed </span>
+                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
+
+                <div className="max-h-80 overflow-y-auto space-y-3 custom-scrollbar">
+                  {processes && processes.length > 0 ? (
+                    processes.map((process, index) => (
+                      <motion.div
+                        key={process.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`group relative p-4 rounded-xl border-2 transition-all ${
+                          process.fixed
+                            ? "bg-gradient-to-r from-gray-800 to-gray-900 border-amber-500/30 hover:border-amber-500/60"
+                            : "bg-gray-700/50 border-cyan-500/20 hover:border-cyan-500/40"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div
+                              style={{ background: process.color }}
+                              className="w-12 h-12 rounded-xl flex items-center justify-center text-black font-bold text-lg shadow-lg transition-transform group-hover:scale-110"
+                            >
+                              {process.name}
+                            </div>
+                            <div>
+                              <div className="font-bold text-white">
+                                {process.name}
+                              </div>
+                              <div className="text-sm text-gray-300">
+                                Arrival:{" "}
+                                <span className="font-mono">
+                                  {process.arrival}
+                                </span>{" "}
+                                • Burst:{" "}
+                                <span className="font-mono">
+                                  {process.burst}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                              process.fixed
+                                ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                                : "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
+                            }`}
+                          >
+                            {process.fixed ? (
+                              <span className="flex items-center gap-1">
+                                ⭐ Fixed
+                              </span>
+                            ) : (
+                              "Custom"
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="text-center p-6 border-2 border-dashed border-gray-600 rounded-xl text-gray-400">
+                      <div className="text-3xl mb-2">📝</div>
+                      <p>No processes available</p>
+                      <p className="text-sm mt-1">
+                        Add custom processes or use fixed ones
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
             </div>
           </aside>
 
-          {/* Main content: Process Summary + Gantt Chart (clean & nice) */}
-          <main className="lg:col-span-9 flex flex-col gap-6 order-2">
-            {/* Process Summary card (nice look) */}
-            <section className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 shadow-sm">
-              <h2 className="text-lg font-bold text-indigo-300 mb-4 flex items-center gap-2">
-                📋 Process Summary
-              </h2>
-              <div className="overflow-auto">
-                {/* Replace with your summary table JSX or keep existing summary rendering */}
-                {simulation.summary.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
-                    No simulation data
-                  </p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-gray-600">
-                          <th className="text-left p-2 text-cyan-400">
-                            Process
-                          </th>
-                          <th className="text-left p-2 text-cyan-400">Type</th>
-                          <th className="text-left p-2 text-cyan-400">
-                            Arrival
-                          </th>
-                          <th className="text-left p-2 text-cyan-400">Burst</th>
-                          <th className="text-left p-2 text-cyan-400">
-                            Waiting
-                          </th>
-                          <th className="text-left p-2 text-cyan-400">
-                            Turnaround
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {simulation.summary.map((proc) => {
-                          const isFixed = FIXED_PROCESSES.some(
-                            (p) => p.id === proc.id
-                          );
-                          return (
-                            <tr
-                              key={proc.id}
-                              className="border-b border-gray-700/50"
-                            >
-                              <td className="p-2">
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    style={{ background: proc.color }}
-                                    className="w-3 h-3 rounded"
-                                  ></div>
-                                  <span className="font-semibold">
-                                    {proc.name}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="p-2">
-                                <span
-                                  className={`text-xs px-2 py-1 rounded-full ${
-                                    isFixed
-                                      ? "bg-cyan-500/20 text-cyan-300"
-                                      : "bg-green-500/20 text-green-300"
-                                  }`}
-                                >
-                                  {isFixed ? "Fixed" : "Custom"}
-                                </span>
-                              </td>
-                              <td className="p-2 font-mono">
-                                {proc.arrival}ms
-                              </td>
-                              <td className="p-2 font-mono">{proc.burst}ms</td>
-                              <td className="p-2 font-mono">
-                                {proc.waiting}ms
-                              </td>
-                              <td className="p-2 font-mono">
-                                {proc.turnaround}ms
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr className="bg-gray-700/50">
-                          <td className="p-2 font-bold">Averages</td>
-                          <td className="p-2"></td>
-                          <td className="p-2"></td>
-                          <td className="p-2"></td>
-                          <td className="p-2 font-mono font-bold">
-                            {avgWaitingTime}ms
-                          </td>
-                          <td className="p-2 font-mono font-bold">
-                            {avgTurnaroundTime}ms
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
+          {/* Main Content */}
+          <main className="gap-6 space-y-8">
+            {/* Process Summary */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 border border-green-500/20 shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-500/20 rounded-lg">
+                    <span className="text-2xl">📊</span>
                   </div>
-                )}
-              </div>
-            </section>
-
-            {/* Full-width CPU Gantt Chart */}
-            <section className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 shadow-sm">
-              <h2 className="text-lg font-bold mb-4 text-indigo-300 flex items-center gap-2">
-                ⏱️ CPU Gantt Chart
-              </h2>
-
-              {simulation.gantt.length === 0 ? (
-                <p className="text-gray-400 text-center p-8 border border-dashed border-gray-700 rounded-lg">
-                  No simulation data. Run simulation to see the chart.
-                </p>
-              ) : (
-                <div className="relative">
-                  <div className="flex h-14 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
-                    {simulation.gantt.map((g, i) => {
-                      const width = simulation.totalTime
-                        ? ((g.end - g.start) / simulation.totalTime) * 100
-                        : 0;
-                      const duration = g.end - g.start;
-                      return (
-                        <motion.div
-                          key={i}
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ duration: 0.4, delay: i * 0.04 }}
-                          style={{ width: `${Math.max(width, 1e-6)}%` }}
-                          className="origin-left h-full border-r border-gray-800 min-w-[44px]"
-                        >
-                          <div
-                            className="h-full w-full flex items-center justify-center font-semibold text-xs sm:text-sm text-black rounded transition-opacity"
-                            style={{ background: g.color }}
-                            title={`Process: ${g.name} | ${g.start} → ${g.end} | Dur: ${duration}`}
-                          >
-                            {duration >= 2 ? (
-                              <span className="truncate px-1">{g.name}</span>
-                            ) : (
-                              <div className="w-2 h-2 rounded-full bg-black/30" />
-                            )}
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Time axis */}
-                  <div className="relative flex w-full h-8 mt-3 overflow-x-hidden">
-                    <div className="absolute top-0 left-0 text-xs font-mono text-gray-400">
-                      0
-                    </div>
-                    {simulation.gantt.map((g, i) => {
-                      const pos = simulation.totalTime
-                        ? (g.end / simulation.totalTime) * 100
-                        : 0;
-                      if (pos > 0) {
-                        return (
-                          <div
-                            key={`t-${i}`}
-                            className="absolute top-0 flex flex-col items-center"
-                            style={{
-                              left: `${pos}%`,
-                              transform: "translateX(-50%)",
-                            }}
-                          >
-                            <div className="w-px h-2 bg-gray-600 mb-1" />
-                            <div className="text-xs font-mono text-gray-400">
-                              {g.end}
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                    {simulation.totalTime > 0 && (
-                      <div className="absolute top-0 right-0 text-xs font-mono text-gray-400">
-                        {simulation.totalTime}
-                      </div>
-                    )}
+                  <div>
+                    <h2 className="text-2xl font-bold text-green-300">
+                      Process Summary
+                    </h2>
+                    <p className="text-gray-400">Detailed execution analysis</p>
                   </div>
                 </div>
-              )}
-            </section>
+                <div className="text-right">
+                  <div className="text-sm text-gray-400">Total CPU Time</div>
+                  <div className="text-2xl font-bold text-white font-mono">
+                    {simulation?.totalTime ?? 0}
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto rounded-xl border border-gray-700">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-700/50 text-gray-300 uppercase text-sm">
+                      <th className="px-6 py-4 text-left font-semibold">
+                        Process
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold">
+                        Arrival
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold">
+                        Burst
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold">
+                        Waiting
+                      </th>
+                      <th className="px-6 py-4 text-center font-semibold">
+                        Turnaround
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-700">
+                    {simulation?.summary && simulation.summary.length > 0 ? (
+                      simulation.summary.map((s, index) => (
+                        <motion.tr
+                          key={s.id}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="hover:bg-gray-700/30 transition-colors"
+                        >
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <div
+                                style={{ background: s.color }}
+                                className="w-10 h-10 rounded-lg flex items-center justify-center text-black font-bold shadow-lg"
+                              >
+                                {s.name}
+                              </div>
+                              <span className="font-semibold text-white">
+                                {s.name}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span className="font-mono text-gray-200 bg-gray-700/50 px-3 py-1 rounded-lg">
+                              {s.arrival}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span className="font-mono text-gray-200 bg-gray-700/50 px-3 py-1 rounded-lg">
+                              {s.burst}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span
+                              className={`font-mono px-3 py-1 rounded-lg ${
+                                s.waiting > 5
+                                  ? "bg-red-500/20 text-red-300"
+                                  : "bg-blue-500/20 text-blue-300"
+                              }`}
+                            >
+                              {s.waiting}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <span
+                              className={`font-mono px-3 py-1 rounded-lg ${
+                                s.turnaround > 8
+                                  ? "bg-orange-500/20 text-orange-300"
+                                  : "bg-green-500/20 text-green-300"
+                              }`}
+                            >
+                              {s.turnaround}
+                            </span>
+                          </td>
+                        </motion.tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-6 py-12 text-center text-gray-400"
+                        >
+                          <div className="text-4xl mb-2">📈</div>
+                          <p>No summary data available</p>
+                          <p className="text-sm mt-1">
+                            Run simulation to generate results
+                          </p>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </motion.section>
+
+            {/* CPU Gantt Chart */}
+<motion.section
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.4 }}
+  className="bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 border border-blue-500/20 shadow-2xl"
+>
+  {/* Header */}
+  <div className="flex items-center justify-between mb-6">
+    <div className="flex items-center gap-3">
+      <div className="p-2 bg-blue-500/20 rounded-lg">
+        <span className="text-xl">⏱️</span>
+      </div>
+      <div>
+        <h2 className="text-xl font-bold text-blue-300">CPU Gantt Chart</h2>
+        <p className="text-sm text-gray-400">Process execution timeline</p>
+      </div>
+    </div>
+    
+    {/* Stats */}
+    {simulation.gantt.length > 0 && (
+      <div className="flex gap-4 text-sm">
+        <div className="text-right">
+          <div className="text-gray-400">Total Time</div>
+          <div className="font-mono text-white font-bold">{simulation.totalTime}</div>
+        </div>
+        <div className="text-right">
+          <div className="text-gray-400">Processes</div>
+          <div className="font-mono text-white font-bold">{simulation.gantt.length}</div>
+        </div>
+      </div>
+    )}
+  </div>
+
+  {/* Gantt Chart */}
+  {simulation.gantt.length === 0 ? (
+    <div className="text-center p-8 border-2 border-dashed border-gray-600 rounded-xl">
+      <div className="text-4xl mb-3">📊</div>
+      <p className="text-gray-400 mb-1">No simulation data available</p>
+      <p className="text-sm text-gray-500">Run simulation to generate the Gantt chart</p>
+    </div>
+  ) : (
+    <div className="space-y-4">
+      {/* Process Labels Legend */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {Array.from(new Set(simulation.gantt.map(g => g.name))).map(processName => {
+          const process = simulation.gantt.find(g => g.name === processName);
+          return (
+            <div key={processName} className="flex items-center gap-2 bg-gray-700/50 px-3 py-1 rounded-lg">
+              <div 
+                className="w-3 h-3 rounded" 
+                style={{ background: process.color }}
+              />
+              <span className="text-sm font-medium text-white">{processName}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Gantt Bars */}
+<div className="relative bg-gray-900/50 rounded-xl p-4 border border-gray-700">
+
+  {/* Gantt Bars (Simple Clean Version) */}
+  <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
+{simulation.gantt.map((g, i) => {
+  const duration = g.end - g.start;
+  const width = (duration / simulation.totalTime) * 100;
+  const finalWidth = Math.max(width, 5); // minimum 5% width
+
+  return (
+    <motion.div
+      key={i}
+      initial={{ width: 0 }}
+      animate={{ width: `${finalWidth}%` }}
+      transition={{ duration: 0.4, delay: i * 0.05 }}
+      className="h-full border-r border-gray-800"
+    >
+      <div
+        className="h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
+        style={{ background: g.color }}
+      >
+        <span className="truncate px-1">{g.name}</span>
+      </div>
+    </motion.div>
+  );
+})}
+
+  </div>
+
+  {/* Clean Time Scale */}
+  <div className="relative flex w-full h-8 mt-3">
+
+    {/* Start time = 0 */}
+    <div className="absolute left-0 text-xs font-mono text-gray-400">0</div>
+
+    {simulation.gantt.map((g, i) => {
+      const left = (g.end / simulation.totalTime) * 100;
+
+      return (
+        <div
+          key={i}
+          className="absolute flex flex-col items-center"
+          style={{
+            left: `${left}%`,
+            transform: "translateX(-50%)"
+          }}
+        >
+          <div className="w-px h-3 bg-gray-600 mb-1"></div>
+          <div className="text-xs font-mono text-gray-400">{g.end}</div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+
+
+      {/* Performance Summary */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+        <div className="bg-gray-700/30 rounded-lg p-3">
+          <div className="text-xs text-gray-400 mb-1">Avg Wait</div>
+          <div className="text-sm font-bold text-white font-mono">{avgWaitingTime}</div>
+        </div>
+        <div className="bg-gray-700/30 rounded-lg p-3">
+          <div className="text-xs text-gray-400 mb-1">Avg Turnaround</div>
+          <div className="text-sm font-bold text-white font-mono">{avgTurnaroundTime}</div>
+        </div>
+        <div className="bg-gray-700/30 rounded-lg p-3">
+          <div className="text-xs text-gray-400 mb-1">CPU Usage</div>
+          <div className="text-sm font-bold text-green-400 font-mono">{cpuUtilization}%</div>
+        </div>
+        <div className="bg-gray-700/30 rounded-lg p-3">
+          <div className="text-xs text-gray-400 mb-1">Context Switches</div>
+          <div className="text-sm font-bold text-white font-mono">
+            {Math.max(0, simulation.gantt.length - 1)}
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</motion.section>
           </main>
         </div>
       </div>
 
-      <ToastContainer position="bottom-right" theme="dark" />
+      <ToastContainer
+        position="bottom-right"
+        theme="dark"
+        toastClassName="bg-gray-800 border border-cyan-500/20"
+      />
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(75, 85, 99, 0.3);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(139, 92, 246, 0.5);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(139, 92, 246, 0.7);
+        }
+      `}</style>
     </div>
   );
 };
