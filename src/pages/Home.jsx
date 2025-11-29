@@ -626,11 +626,6 @@ export default function Home() {
             </div>
           );
         })}
-
-        {/* ❌ Removed — this caused end time duplication */}
-        {/* <div className="absolute right-0 text-xs font-mono text-gray-400">
-          {simulation.totalTime}
-        </div> */}
       </div>
     </div>
   )}

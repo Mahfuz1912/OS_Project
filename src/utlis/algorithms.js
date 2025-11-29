@@ -95,7 +95,7 @@ export function simulateRR(processes, quantum = 2) {
   }
 
   while (completed < n) {
-    // যদি queue খালি হয়, তাহলে next arrival এ jump কর
+   
     if (queue.length === 0) {
       const next = procs
         .filter(p => p.remaining > 0)
@@ -114,7 +114,7 @@ export function simulateRR(processes, quantum = 2) {
       }
     }
 
-    // সময় অনুযায়ী নতুন arrival ঢোকাও
+   
     enqueueArrivals()
 
     const pid = queue.shift()
@@ -134,7 +134,7 @@ export function simulateRR(processes, quantum = 2) {
     time += use
     busy += use
 
-    // সময় বাড়ার পরে আবার incoming arrivals ঢোকাও
+
     enqueueArrivals()
 
     if (p.remaining > 0) {
@@ -144,7 +144,7 @@ export function simulateRR(processes, quantum = 2) {
     }
   }
 
-  // Summary calculate
+
   const summary = procs.map(p => {
     const last = gantt.slice().reverse().find(g => g.name === p.name)
     const completion = last ? last.end : p.arrival
@@ -175,7 +175,6 @@ export function simulateRR(processes, quantum = 2) {
     busyTime: busy
   }
 }
-// ========== SRTF (Shortest Remaining Time First - Preemptive) ==========
 export function simulateSRTF(processes) {
   const procs = cloneProcs(processes).map(p => ({
     ...p,
@@ -193,10 +192,10 @@ export function simulateSRTF(processes) {
   let segmentStart = 0
 
   while (completed < n) {
-    // arrival হয়েছে এমন process গুলো বের করি
+  
     const available = procs.filter(p => p.arrival <= time && p.remaining > 0)
 
-    // যদি কিছু না পাওয়া যায়, idle দাও
+ 
     if (available.length === 0) {
       const nextArrival = Math.min(
         ...procs.filter(p => p.remaining > 0).map(p => p.arrival)
@@ -213,11 +212,11 @@ export function simulateSRTF(processes) {
       continue
     }
 
-    // Shortest remaining time যেটার কম
+
     available.sort((a, b) => a.remaining - b.remaining || a.arrival - b.arrival)
     const shortest = available[0]
 
-    // process change হলে আগের segment close কর
+
     if (!current || current.id !== shortest.id) {
       if (current) {
         gantt.push({
@@ -231,12 +230,11 @@ export function simulateSRTF(processes) {
       segmentStart = time
     }
 
-    // ১ time unit execute
+
     current.remaining--
     time++
     busy++
 
-    // শেষ হয়ে গেলে complete mark কর
     if (current.remaining === 0) {
       current.completion = time
       completed++
@@ -252,7 +250,7 @@ export function simulateSRTF(processes) {
     }
   }
 
-  // Summary calculation
+
   const summary = procs.map(p => {
     const turnaround = p.completion - p.arrival
     const waiting = turnaround - p.burst
