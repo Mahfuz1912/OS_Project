@@ -216,7 +216,6 @@ export default function Home() {
       className="space-y-6 max-w-7xl mx-auto p-4"
     >
       <ToastContainer position="top-right" />
-
       {/* ================= Top Controls ================= */}
       <div className="grid md:grid-cols-3 gap-6">
         {/* Algorithm Section */}
@@ -560,7 +559,6 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-
       {/* ================= Gantt Section ================= */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -568,73 +566,38 @@ export default function Home() {
         className="bg-base-200 p-5 rounded-xl shadow-lg"
       >
         <h3 className="font-bold mb-3">📊 Gantt Chart</h3>
-
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4 text-indigo-400 flex items-center">
-            <span className="mr-2">⏱️</span> CPU Gantt Chart
-          </h2>
-
+        <div className="flex h-12 overflow-x-auto bg-gray-300 rounded-lg shadow-inner">
           {simulation.gantt.length === 0 ? (
-            <p className="text-gray-500 text-center p-8 border border-dashed border-gray-700 rounded-lg">
-              No simulation data. Run simulation to see the chart.
-            </p>
-          ) : (
-            <div className="relative">
-              {/* Process Segments */}
-              <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
-                {simulation.gantt.map((g, i) => {
-                  const duration = g.end - g.start;
-                  const width = (duration / simulation.totalTime) * 100;
-                  const finalWidth = Math.max(width, 5); // minimum 5% width
-
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${finalWidth}%` }}
-                      transition={{ duration: 0.4, delay: i * 0.05 }}
-                      className="h-full border-r border-gray-800"
-                    >
-                      <div
-                        className="cursor-pointer h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
-                        style={{ background: g.color }}
-                        title={`${g.name}: ${g.start}ms → ${g.end}ms`}
-                      >
-                        <span className="truncate px-1">{g.name}</span>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Optimized Time Scale */}
-              <div className="relative flex w-full h-8 mt-3">
-                {/* Start time = 0 */}
-                <div className="absolute left-0 text-xs font-mono text-gray-400">
-                  0
-                </div>
-
-                {simulation.gantt.map((g, i) => {
-                  const left = (g.end / simulation.totalTime) * 100;
-
-                  return (
-                    <div
-                      key={i}
-                      className="absolute flex flex-col items-center"
-                      style={{
-                        left: `${left}%`,
-                        transform: "translateX(-50%)",
-                      }}
-                    >
-                      <div className="w-px h-3 bg-gray-600 mb-1"></div>
-                      <div className="text-xs font-mono text-gray-400">
-                        {g.end}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="w-full h-full flex items-center justify-center text-gray-500 font-semibold text-sm">
+              No timeline available — run simulation to view Gantt Chart.
             </div>
+          ) : (
+            simulation.gantt.map((g, i) => {
+              const duration = g.end - g.start;
+              const totalWidth = 600;
+              const widthPx = Math.max(
+                (duration / simulation.totalTime) * totalWidth,
+                30
+              );
+
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ width: 0 }}
+                  animate={{ width: widthPx }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="h-full border-r border-gray-800"
+                >
+                  <div
+                    className="cursor-pointer h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold"
+                    style={{ background: g.color }}
+                    title={`${g.name}: ${g.start}ms → ${g.end}ms`}
+                  >
+                    <span className="truncate px-1">{g.name}</span>
+                  </div>
+                </motion.div>
+              );
+            })
           )}
         </div>
 
