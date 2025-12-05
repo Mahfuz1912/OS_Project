@@ -188,7 +188,7 @@ export default function Home() {
           toast.error("Invalid file format: missing required fields");
         }
       } catch (error) {
-        toast.error("Invalid JSON file");
+        toast.error("Invalid JSON file", error);
       }
     };
     reader.readAsText(file);

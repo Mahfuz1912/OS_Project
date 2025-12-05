@@ -175,6 +175,7 @@ export function simulateRR(processes, quantum = 2) {
     busyTime: busy
   }
 }
+
 export function simulateSRTF(processes) {
   const procs = cloneProcs(processes).map(p => ({
     ...p,
