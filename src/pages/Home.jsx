@@ -567,71 +567,75 @@ export default function Home() {
         animate={{ opacity: 1 }}
         className="bg-base-200 p-5 rounded-xl shadow-lg"
       >
-<h3 className="font-bold mb-3">📊 Gantt Chart</h3>
+        <h3 className="font-bold mb-3">📊 Gantt Chart</h3>
 
-<div className="mt-8">
-  <h2 className="text-xl font-bold mb-4 text-indigo-400 flex items-center">
-    <span className="mr-2">⏱️</span> CPU Gantt Chart
-  </h2>
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4 text-indigo-400 flex items-center">
+            <span className="mr-2">⏱️</span> CPU Gantt Chart
+          </h2>
 
-  {simulation.gantt.length === 0 ? (
-    <p className="text-gray-500 text-center p-8 border border-dashed border-gray-700 rounded-lg">
-      No simulation data. Run simulation to see the chart.
-    </p>
-  ) : (
-    <div className="relative">
-      {/* Process Segments */}
-      <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
-{simulation.gantt.map((g, i) => {
-  const duration = g.end - g.start;
-  const width = (duration / simulation.totalTime) * 100;
-  const finalWidth = Math.max(width, 5); // minimum 5% width
+          {simulation.gantt.length === 0 ? (
+            <p className="text-gray-500 text-center p-8 border border-dashed border-gray-700 rounded-lg">
+              No simulation data. Run simulation to see the chart.
+            </p>
+          ) : (
+            <div className="relative">
+              {/* Process Segments */}
+              <div className="flex h-12 overflow-x-auto w-full bg-gray-700 rounded-lg shadow-inner">
+                {simulation.gantt.map((g, i) => {
+                  const duration = g.end - g.start;
+                  const width = (duration / simulation.totalTime) * 100;
+                  const finalWidth = Math.max(width, 5); // minimum 5% width
 
-  return (
-    <motion.div
-      key={i}
-      initial={{ width: 0 }}
-      animate={{ width: `${finalWidth}%` }}
-      transition={{ duration: 0.4, delay: i * 0.05 }}
-      className="h-full border-r border-gray-800"
-    >
-      <div
-        className="h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
-        style={{ background: g.color }}
-      >
-        <span className="truncate px-1">{g.name}</span>
-      </div>
-    </motion.div>
-  );
-})}
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${finalWidth}%` }}
+                      transition={{ duration: 0.4, delay: i * 0.05 }}
+                      className="h-full border-r border-gray-800"
+                    >
+                      <div
+                        className="h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
+                        style={{ background: g.color }}
+                      >
+                        <span className="truncate px-1">{g.name}</span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
 
-      </div>
+              {/* Optimized Time Scale */}
+              <div className="relative flex w-full h-8 mt-3">
+                {/* Start time = 0 */}
+                <div className="absolute left-0 text-xs font-mono text-gray-400">
+                  0
+                </div>
 
-      {/* Optimized Time Scale */}
-      <div className="relative flex w-full h-8 mt-3">
-        {/* Start time = 0 */}
-        <div className="absolute left-0 text-xs font-mono text-gray-400">0</div>
+                {simulation.gantt.map((g, i) => {
+                  const left = (g.end / simulation.totalTime) * 100;
 
-        {simulation.gantt.map((g, i) => {
-          const left = (g.end / simulation.totalTime) * 100;
-
-          return (
-            <div
-              key={i}
-              className="absolute flex flex-col items-center"
-              style={{ left: `${left}%`, transform: "translateX(-50%)" }}
-            >
-              <div className="w-px h-3 bg-gray-600 mb-1"></div>
-              <div className="text-xs font-mono text-gray-400">{g.end}</div>
+                  return (
+                    <div
+                      key={i}
+                      className="absolute flex flex-col items-center"
+                      style={{
+                        left: `${left}%`,
+                        transform: "translateX(-50%)",
+                      }}
+                    >
+                      <div className="w-px h-3 bg-gray-600 mb-1"></div>
+                      <div className="text-xs font-mono text-gray-400">
+                        {g.end}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          );
-        })}
-      </div>
-    </div>
-  )}
-</div>
-
-
+          )}
+        </div>
 
         {/* ================= Summary Table ================= */}
         <div className="mt-6">
