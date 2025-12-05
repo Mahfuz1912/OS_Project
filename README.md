@@ -1,16 +1,100 @@
-# React + Vite
+# OS Project – CPU Scheduling Simulator (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive CPU scheduling simulator built with React and Vite. It visualizes common scheduling algorithms with a Gantt chart, shows per‑process metrics, and provides import/export of process sets.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Algorithms: FCFS, SJF, SRTF (preemptive SJF), Round Robin (configurable time quantum).
+- Gantt chart visualization with smooth animations.
+- Hover tooltips on segments showing start → end times.
+- Per‑process metrics: waiting time, turnaround time; plus averages and CPU utilization.
+- Process management: add, edit, delete, clear; color assignment; validation.
+- Import/Export processes as JSON.
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Prerequisites: Node.js 18+ recommended.
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Build and preview production:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Usage
+
+1. Choose an algorithm from the selector (FCFS, SJF, SRTF, RR).
+2. For Round Robin, set the `Time Quantum`.
+3. Add processes with fields:
+   - `name`: unique label (e.g., P1)
+   - `arrival`: arrival time (ms), ≥ 0
+   - `burst`: CPU burst (ms), > 0
+   - `color`: any valid hex color (optional, auto/unique if omitted)
+4. Click `Run Simulation` to generate the schedule.
+5. Hover Gantt segments to view `${name}: start → end` times.
+6. Review metrics (waiting/turnaround) and averages.
+7. Use `Export`/`Import` to save or load process sets.
+
+## Import/Export JSON Format
+
+Each process in the JSON array should include `name`, `arrival`, `burst`, and optionally `color`. If `id` is missing, it is generated.
+
+```json
+[
+  { "name": "P1", "arrival": 0, "burst": 5, "color": "#86efac" },
+  { "name": "P2", "arrival": 2, "burst": 3, "color": "#60a5fa" }
+]
+```
+
+## Project Structure
+
+```
+eslint.config.js
+index.html
+package.json
+vite.config.js
+public/
+src/
+	App.css
+	index.css
+	main.jsx
+	routes.jsx
+	assets/
+	component/
+		Footer.jsx
+		MainContent.jsx
+		MainLayout.jsx
+		Navbar.jsx
+	pages/
+		About.jsx
+		Algorithm.jsx
+		CompareAlgorithm.jsx
+		Home.jsx
+		Simulation.jsx
+	utlis/
+		algorithms.js
+		helpers.js
+```
+
+Key files:
+
+- `src/pages/Home.jsx`: main UI and simulator orchestration.
+- `src/utlis/algorithms.js`: scheduling implementations (FCFS, SJF, SRTF, RR).
+- `src/utlis/helpers.js`: utilities (e.g., id generation, color helpers).
+- `src/component/*`: layout and shared components.
+
+## Notes
+
+- Chart scaling: with many segments, use horizontal scroll and hover tooltips to keep data readable.
+- Validation: arrival ≥ 0, burst > 0, and unique `name` recommended.
+- Built with Vite for fast dev and production builds.
+
+## License
+
+This project is for educational purposes. Add a license if you plan to publish or distribute.
