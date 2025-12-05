@@ -596,8 +596,9 @@ export default function Home() {
                       className="h-full border-r border-gray-800"
                     >
                       <div
-                        className="h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
+                        className="cursor-pointer h-full w-full flex items-center justify-center text-xs sm:text-sm text-white font-bold rounded-lg"
                         style={{ background: g.color }}
+                        title={`${g.name}: ${g.start}ms → ${g.end}ms`}
                       >
                         <span className="truncate px-1">{g.name}</span>
                       </div>
