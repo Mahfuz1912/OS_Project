@@ -10,14 +10,14 @@ const About = () => {
       description:
         "Focused on CPU scheduling algorithms, simulation design, and accurate execution flow. Expert in performance-optimized algorithm development and process-level logic engineering.",
       skills: [
-        "Algorithm Design",
-        "Simulation Logic Engineering",
-        "Performance Optimization",
+        "Programmer",
         "React.js",
         "JavaScript",
         "Problem Solving",
         "Framer Motion",
         "Tailwind CSS",
+        "Node.js",
+        "MongoDB",
       ],
       contribution: [
         "Implemented Tailwind, and Framer Motion in the project",
@@ -33,11 +33,11 @@ const About = () => {
       education: "BSc in Computer Science & Engineering (CSE)",
       email: "mahfuz22205101912@diu.diu.edu.bd",
       github: "https://github.com/Mahfuz1912",
-      linkedin: "https://linkedin.com/in/mahfuz",
+      linkedin: "https://www.linkedin.com/in/sabitalmahfuz",
       expertise: [
-        "Algorithm Development",
-        "Simulation Engineering",
-        "Execution Flow Logic",
+        "Algorithm",
+        "DSA",
+        "React.js Development",
       ],
     },
 
@@ -52,8 +52,10 @@ const About = () => {
         "React.js",
         "JavaScript",
         "Problem Solving",
-        "Responsive & Adaptive Layout Design",
-        "Algorithm Visualization & Data Rendering",
+        "Responsive Layout Design",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
       ],
       contribution: [
         "Designed UI/UX using React",
@@ -65,14 +67,13 @@ const About = () => {
       ],
       image: "https://i.ibb.co.com/HD7x3VYZ/photo-2025-11-28-23-14-11.jpg",
       education: "BSc in Computer Science & Engineering (CSE)",
-      email: "emon@student.diu.edu.bd",
-      github: "https://github.com/emon",
+      email: "emon23105101551@diu.edu.bd",
+      github: "https://github.com/Ashraf1551",
       linkedin: "https://linkedin.com/in/emon",
       expertise: [
         "Frontend Development",
-        "UI/UX Engineering",
-        "Algorithm Visualization",
-        "User Experience Design",
+        "Algorithm",
+        "DSA",
       ],
     },
   ];
@@ -251,19 +252,10 @@ const About = () => {
     },
   };
 
-  const skillCategoryVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white py-8">
+    <div className="min-h-screen bg-linear-to-br rounded-2xl from-gray-900 to-gray-800 text-white py-8">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <motion.div
@@ -272,7 +264,7 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
             About CPU Scheduler Pro
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
