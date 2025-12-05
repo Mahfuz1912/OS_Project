@@ -4,7 +4,6 @@ import { FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
 
   const quickLinks = [
     { name: "🏠 Home", path: "/" },
@@ -14,10 +13,10 @@ const Footer = () => {
   ];
 
   const resources = [
-    { name: "📄 Project Report", url: "#" },
-    { name: "💻 GitHub", url: "https://github.com" },
-    { name: "🎓 BLC", url: "#" },
-    { name: "📖 Documentation", url: "#" },
+    { name: "📄 Project Report", url: "https://drive.google.com/file/d/1x4er2bTyMxEDO3654OX_wP48LLogZoP_/view?usp=drive_link" },
+    { name: "💻 GitHub", url: "https://github.com/Mahfuz1912/OS_Project" },
+    // { name: "🎓 BLC", url: "#" },
+    // { name: "📖 Documentation", url: "#" },
   ];
 
   const teamMembers = [
@@ -26,18 +25,18 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 text-white mt-20 border-t border-indigo-500/30">
+    <footer className="bg-linear-to-r from-gray-900 via-purple-900 to-indigo-900 text-white mt-20 border-t border-indigo-500/30">
       {/* Main Footer Content */}
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                 DIU
               </div>
               <div>
-                <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                <h3 className="text-xl font-bold bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                   Scheduler Pro
                 </h3>
                 <p className="text-sm text-gray-400">DIU Project</p>
@@ -50,7 +49,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://github.com"
+                href="https://github.com/Mahfuz1912/OS_Project"
                 className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-cyan-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/25"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -175,7 +174,7 @@ const Footer = () => {
       </div>
 
       {/* Decorative Gradient Bar */}
-      <div className="h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500"></div>
+      <div className="h-1 bg-linear-to-r from-cyan-500 via-purple-500 to-pink-500"></div>
     </footer>
   );
 };
