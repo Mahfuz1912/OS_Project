@@ -29,16 +29,12 @@ const About = () => {
         "Improved overall algorithm performance and logical reliability",
       ],
       image:
-        "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/515439059_1296199291929219_8192045324855501956_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGyGPZRRrsaTFUOh-qLLX5PASNQRcMANzcBI1BFwwA3N8pnC1AQvRNDUPFwgYvOMds9e9BOj-1LJrXhaZ3uqUhM&_nc_ohc=ZZXJLjlkRvsQ7kNvwEAUjas&_nc_oc=AdkklH0mVL3A-cCnb-FiYX6qkIOLbp-VvlKrDvtqFpfTpEsN768gIXwbqaP_F2gybag&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=vNnRkvgijV4DOrHnH2Q6mA&oh=00_Afi-jUYPF4bstYLxMsi8c01k0i8vRlHvHjlnKaIb1y1LEg&oe=692F9C13",
+        "https://i.ibb.co.com/84gtD4m3/515439059-1296199291929219-8192045324855501956-n.jpg",
       education: "BSc in Computer Science & Engineering (CSE)",
       email: "mahfuz22205101912@diu.diu.edu.bd",
       github: "https://github.com/Mahfuz1912",
       linkedin: "https://www.linkedin.com/in/sabitalmahfuz",
-      expertise: [
-        "Algorithm",
-        "DSA",
-        "React.js Development",
-      ],
+      expertise: ["Algorithm", "DSA", "React.js Development"],
     },
 
     {
@@ -70,11 +66,7 @@ const About = () => {
       email: "emon23105101551@diu.edu.bd",
       github: "https://github.com/Ashraf1551",
       linkedin: "https://linkedin.com/in/emon",
-      expertise: [
-        "Frontend Development",
-        "Algorithm",
-        "DSA",
-      ],
+      expertise: ["Frontend Development", "Algorithm", "DSA"],
     },
   ];
 
@@ -251,8 +243,6 @@ const About = () => {
       },
     },
   };
-
-
 
   return (
     <div className="min-h-screen bg-linear-to-br rounded-2xl from-gray-900 to-gray-800 text-white py-8">
